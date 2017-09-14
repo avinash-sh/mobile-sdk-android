@@ -47,6 +47,7 @@ public class InMobiNativeAdResponse implements NativeAdResponse {
     private String socialContext;
     private Rating rating;
     private String landingUrl;
+    private String[] impressionTrackers;
     private HashMap<String, Object> nativeElements = new HashMap<String, Object>();
     private boolean expired = false;
     private boolean registered = false;
@@ -72,7 +73,6 @@ public class InMobiNativeAdResponse implements NativeAdResponse {
                 nativeAdEventlistener = null;
                 expired = true;
                 if (imNative != null) {
-                    InMobiNative.unbind(registeredView);
                     imNative = null;
                 }
                 if(nativeElements != null && !nativeElements.isEmpty()){
@@ -91,8 +91,10 @@ public class InMobiNativeAdResponse implements NativeAdResponse {
         this.imNative = imNative;
         try {
             nativeElements.put(InMobiSettings.NATIVE_ELEMENT_OBJECT, imNative);
-            JSONObject response = new JSONObject((String) imNative.getAdContent());
+            JSONObject response = imNative.getCustomAdContent();
             title = JsonUtil.getJSONString(response, InMobiSettings.KEY_TITLE);
+            int length = JsonUtil.getJSONString(response, InMobiSettings.IMPRESSION_TRACKERS).length();
+            impressionTrackers = JsonUtil.getJSONString(response, InMobiSettings.IMPRESSION_TRACKERS).substring(2,length-2).split("\",\"");
             callToAction = JsonUtil.getJSONString(response, InMobiSettings.KEY_CALL_TO_ACTION);
             description = JsonUtil.getJSONString(response, InMobiSettings.KEY_DESCRIPTION);
             JSONObject iconObject = JsonUtil.getJSONObject(response, InMobiSettings.KEY_ICON);
@@ -106,7 +108,7 @@ public class InMobiNativeAdResponse implements NativeAdResponse {
             clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    imNative.reportAdClick(null); // no additional params passed in for click tracking
+                    imNative.reportAdClickAndOpenLandingPage(); // no additional params passed in for click tracking
                     onAdClicked();
                     if (v != null && landingUrl != null && !landingUrl.isEmpty()) {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
@@ -199,7 +201,7 @@ public class InMobiNativeAdResponse implements NativeAdResponse {
     @Override
     public boolean registerView(View view, NativeAdEventListener listener) {
         if (imNative != null && !registered && !expired) {
-            InMobiNative.bind(view, imNative);
+            new ImpressionBeaconAsyncTask().execute(impressionTrackers);
             view.setOnClickListener(clickListener);
             registeredView = view;
             registered = true;
@@ -213,7 +215,7 @@ public class InMobiNativeAdResponse implements NativeAdResponse {
     @Override
     public boolean registerViewList(View view, List<View> clickables, NativeAdEventListener listener) {
         if (imNative != null && !registered && !expired) {
-            InMobiNative.bind(view, imNative);
+            new ImpressionBeaconAsyncTask().execute(impressionTrackers);
             for (View clickable : clickables) {
                 clickable.setOnClickListener(clickListener);
             }

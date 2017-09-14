@@ -53,17 +53,42 @@ public class InMobiNativeAdListener implements InMobiNative.NativeAdListener {
     }
 
     @Override
-    public void onAdDismissed(InMobiNative inMobiNative) {
+    public void onAdFullScreenDismissed(InMobiNative inMobiNative) {
 
     }
 
     @Override
-    public void onAdDisplayed(InMobiNative inMobiNative) {
+    public void onAdFullScreenWillDisplay(InMobiNative inMobiNative) {
 
     }
 
     @Override
-    public void onUserLeftApplication(InMobiNative inMobiNative) {
+    public void onAdFullScreenDisplayed(InMobiNative inMobiNative) {
+
+    }
+
+    @Override
+    public void onUserWillLeaveApplication(InMobiNative inMobiNative) {
+
+    }
+
+    @Override
+    public void onAdImpressed(InMobiNative inMobiNative) {
+
+    }
+
+    @Override
+    public void onAdClicked(InMobiNative inMobiNative) {
+
+    }
+
+    @Override
+    public void onMediaPlaybackComplete(InMobiNative inMobiNative) {
+
+    }
+
+    @Override
+    public void onAdStatusChanged(InMobiNative inMobiNative) {
 
     }
 }
