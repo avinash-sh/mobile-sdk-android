@@ -35,7 +35,8 @@ repositories {
 
 dependencies {
     compile project(':sdk')
-    compile "com.inmobi.monetization:inmobi-ads:${project.version}"
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+//    compile "com.inmobi.monetization:inmobi-ads:6.2.0"
 }
 
 /**
