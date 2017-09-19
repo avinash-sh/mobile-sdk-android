@@ -35,7 +35,7 @@ repositories {
 
 dependencies {
     compile project(':sdk')
-    compile "com.inmobi.monetization:inmobi-ads:${project.version}"
+    compile "com.inmobi.monetization:inmobi-ads:7.0.0"
 }
 
 /**

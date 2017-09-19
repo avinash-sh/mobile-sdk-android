@@ -24,7 +24,7 @@ import com.inmobi.ads.InMobiInterstitial;
 
 import java.util.Map;
 
-public class InMobiListener implements InMobiBanner.BannerAdListener, InMobiInterstitial.InterstitialAdListener {
+public class InMobiListener implements InMobiBanner.BannerAdListener, InMobiInterstitial.InterstitialAdListener2 {
 
     private final MediatedAdViewController mediatedAdViewController;
     private final String className;
@@ -89,6 +89,16 @@ public class InMobiListener implements InMobiBanner.BannerAdListener, InMobiInte
     }
 
     @Override
+    public void onAdDisplayFailed(InMobiInterstitial inMobiInterstitial) {
+
+    }
+
+    @Override
+    public void onAdWillDisplay(InMobiInterstitial inMobiInterstitial) {
+
+    }
+
+    @Override
     public void onAdDisplayed(InMobiInterstitial inMobiInterstitial) {
         if (mediatedAdViewController != null) {
             mediatedAdViewController.onAdExpanded();
@@ -123,6 +133,11 @@ public class InMobiListener implements InMobiBanner.BannerAdListener, InMobiInte
         if (mediatedAdViewController != null) {
             mediatedAdViewController.onAdFailed(InMobiSettings.getResultCode(inMobiAdRequestStatus));
         }
+    }
+
+    @Override
+    public void onAdReceived(InMobiInterstitial inMobiInterstitial) {
+
     }
 
     @Override
